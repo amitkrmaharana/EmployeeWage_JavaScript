@@ -3,10 +3,11 @@ const IS_PART_TIME = 2;
 const FULL_TIME_HOUR = 8;
 const PART_TIME_HOUR = 4;
 const WAGE_PER_HOUR = 20;
+const NUM_OF_WORKING_DAYS = 20;
 
 
 function getWorkingHours(empCheck) {
-    switch(checkEmp) {
+    switch(empCheck) {
         case IS_FULL_TIME:
             return FULL_TIME_HOUR;
         case IS_PART_TIME:
@@ -15,8 +16,10 @@ function getWorkingHours(empCheck) {
             return 0;
     }
 }
-let empHr = 0;
-let checkEmp = Math.floor(Math.random() * 10) % 3;
-empHr = getWorkingHours(checkEmp);
-let dailyEmployeeWage = empHr * WAGE_PER_HOUR;
-console.log("Employee Hours: " + empHr + " Daily Wage: " + dailyEmployeeWage);
+let totalempHr = 0;
+for (let days = 0;days <= NUM_OF_WORKING_DAYS;days++) {
+    let checkEmp = Math.floor(Math.random() * 10) % 3;
+    totalempHr += getWorkingHours(checkEmp);
+}
+let monthlyWage = totalempHr * WAGE_PER_HOUR;
+console.log("Total Employee Hours: " + totalempHr + "\nMonthly Wage: " + monthlyWage);
