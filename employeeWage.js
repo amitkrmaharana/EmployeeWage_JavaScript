@@ -21,95 +21,27 @@ function getWorkingHours(empCheck) {
 function calculateDailyWage(empHr) {
     return empHr * WAGE_PER_HOUR;
 }
-
-function sum(dailyWage) {
-    totalEmpWage += dailyWage;
-}
-
-function totalWages(totalEmpWage, dailyWage){
-    return totalEmpWage + dailyWage;
-}
-let dailyCounter = 0;
-function mapDayWithWage(dailyWage) {
-    dailyCounter++;
-    return dailyCounter + " = " + dailyWage;
-}
-
-function fulltimeWage(dailyWage) {
-    return dailyWage.includes("160");
-}
-
-function partTimeWage(dailyWage) {
-    return dailyWage.includes("80");
-}
-
-function totalDaysWorked(numOfDays, dailyWage) {
-    if(dailyWage > 0) return numOfDays+1;
-    return numOfDays;
-}
-
-let totalEmpWage = 0;
 let totalempHr = 0;
 let totalWorkingDays = 0;
 let employeeDailyWagesArr = new Array();
-let employeeDailyWageMap = new Map();
-let employeeDailyHrsMap = new Map();
-
 while (totalempHr < MAX_WORKING_HOUR && totalWorkingDays < MAX_WORKING_DAYS) {
-    totalWorkingDays++;
     let checkEmp = Math.floor(Math.random() * 10) % 3;
     let empHr = getWorkingHours(checkEmp);
     totalempHr += empHr
-    employeeDailyWagesArr.push(calculateDailyWage(empHr));    
-    employeeDailyHrsMap.set(totalWorkingDays, empHr);
-    employeeDailyWageMap.set(totalWorkingDays, calculateDailyWage(empHr));
-}
-employeeDailyWagesArr.forEach(sum);
-console.log("Total Employee Hours: " + totalempHr + "\nTotal Working Days: " + totalWorkingDays + "\nMonthly Wage: " + totalEmpWage);
-console.log("Daily Wages are: \n" + employeeDailyWagesArr);
+    totalWorkingDays++;
+    employeeDailyWagesArr.push(
+        {
+            dayNum:totalWorkingDays,
+            dailyHours:empHr,
+            dailyWage:calculateDailyWage(empHr),
+            toString() {
+                return '\nDay' + this.dayNum + ' => Working Hours is ' + this.dailyHours +
+                        ' And Wage Earned = ' + this.dailyWage
+            },
 
-// iterate through array using reduce method in which totalWage function is called and starting the element from 0 value.
-console.log("Employee Wage with reduce function: " + employeeDailyWagesArr.reduce(totalWages, 0));
-
-let mapDayWithWageArr = employeeDailyWagesArr.map(mapDayWithWage);
-console.log("Daily wage Map:\n" + mapDayWithWageArr);
-
-let fullDayWageArr = mapDayWithWageArr.filter(fulltimeWage);
-console.log("Daily Wage  filter when worked full time:\n" + fullDayWageArr)
-
-console.log("First Full Time Wage day:\n" + mapDayWithWageArr[0]);
-
-console.log("Check all Element have Full time wage:\n"
-            + fullDayWageArr.every(fulltimeWage));
-
-console.log("Check if any Part Time Wage:\n" + mapDayWithWageArr.some(partTimeWage));
-
-console.log("Number of days Employee worked: " + employeeDailyWagesArr.reduce(totalDaysWorked, 0));
-
-console.log(employeeDailyWageMap);
-console.log("Employee Wage Map Total Wage: " + Array.from(employeeDailyWageMap.values()).reduce(totalWages,0));
-console.log("Employee Wage Map Total Hours: " + Array.from(employeeDailyHrsMap.values()).reduce(totalWages,0));
-
-const findTotal = (totalVal, dailyVal) => {
-    return totalVal + dailyVal;
+        }
+    );
 }
 
-let count = 0;
-let totalHours = Array.from(employeeDailyHrsMap.values()).reduce(findTotal,0);
-let totalSalary = Array.from(employeeDailyWageMap.values()).reduce(findTotal,0);
-console.log("Emp Wage with a Arrow:  Total Hours: " + totalHours + " Total Salary: " + totalSalary);
+console.log("Daily Hours Worked and Wage Earned: " + employeeDailyWagesArr);
 
-let nonWorkingDays = new Array();
-let partWorkingDays = new Array();
-let fullWorkingDays = new Array();
-
-employeeDailyHrsMap.forEach( (value,key) => {
-    console.log("Values: " + value + " Keys: " + key);
-    if (value == 8) fullWorkingDays.push(key);
-    else if(value == 4) partWorkingDays.push(key);
-    else nonWorkingDays.push(key);
-});
-
-console.log("Full working Days: " + fullWorkingDays);
-console.log("Part working Days: " + partWorkingDays);
-console.log("Non working Days: " + nonWorkingDays);
