@@ -89,3 +89,27 @@ console.log("Number of days Employee worked: " + employeeDailyWagesArr.reduce(to
 console.log(employeeDailyWageMap);
 console.log("Employee Wage Map Total Wage: " + Array.from(employeeDailyWageMap.values()).reduce(totalWages,0));
 console.log("Employee Wage Map Total Hours: " + Array.from(employeeDailyHrsMap.values()).reduce(totalWages,0));
+
+const findTotal = (totalVal, dailyVal) => {
+    return totalVal + dailyVal;
+}
+
+let count = 0;
+let totalHours = Array.from(employeeDailyHrsMap.values()).reduce(findTotal,0);
+let totalSalary = Array.from(employeeDailyWageMap.values()).reduce(findTotal,0);
+console.log("Emp Wage with a Arrow:  Total Hours: " + totalHours + " Total Salary: " + totalSalary);
+
+let nonWorkingDays = new Array();
+let partWorkingDays = new Array();
+let fullWorkingDays = new Array();
+
+employeeDailyHrsMap.forEach( (value,key) => {
+    console.log("Values: " + value + " Keys: " + key);
+    if (value == 8) fullWorkingDays.push(key);
+    else if(value == 4) partWorkingDays.push(key);
+    else nonWorkingDays.push(key);
+});
+
+console.log("Full working Days: " + fullWorkingDays);
+console.log("Part working Days: " + partWorkingDays);
+console.log("Non working Days: " + nonWorkingDays);
