@@ -22,6 +22,33 @@ function calculateDailyWage(empHr) {
     return empHr * WAGE_PER_HOUR;
 }
 
+function sum(dailyWage) {
+    totalEmpWage += dailyWage;
+}
+
+function totalWages(totalEmpWage, dailyWage){
+    return totalEmpWage + dailyWage;
+}
+let dailyCounter = 0;
+function mapDayWithWage(dailyWage) {
+    dailyCounter++;
+    return dailyCounter + " = " + dailyWage;
+}
+
+function fulltimeWage(dailyWage) {
+    return dailyWage.includes("160");
+}
+
+function isAnyPartTimeWage(dailyWage) {
+    return dailyWage.includes("80");
+}
+
+function totalDaysWorked(numOfDays, dailyWage) {
+    if(dailyWage > 0) return numOfDays+1;
+    return numOfDays;
+}
+
+let totalEmpWage = 0;
 let totalempHr = 0;
 let totalWorkingDays = 0;
 let employeeDailyWagesArr = new Array();
@@ -33,6 +60,24 @@ while (totalempHr < MAX_WORKING_HOUR && totalWorkingDays < MAX_WORKING_DAYS) {
     employeeDailyWagesArr.push(calculateDailyWage(empHr));
     totalWorkingDays++;
 }
-let monthlyWage = totalempHr * WAGE_PER_HOUR;
-console.log("Total Employee Hours: " + totalempHr + "\nTotal Working Days: " + totalWorkingDays + "\nMonthly Wage: " + monthlyWage);
+employeeDailyWagesArr.forEach(sum);
+console.log("Total Employee Hours: " + totalempHr + "\nTotal Working Days: " + totalWorkingDays + "\nMonthly Wage: " + totalEmpWage);
 console.log("Daily Wages are: \n" + employeeDailyWagesArr);
+
+// iterate through array using reduce method in which totalWage function is called and starting the element from 0 value.
+console.log("Employee Wage with reduce function: " + employeeDailyWagesArr.reduce(totalWages, 0));
+
+let mapDayWithWageArr = employeeDailyWagesArr.map(mapDayWithWage);
+console.log("Daily wage Map:\n" + mapDayWithWageArr);
+
+let fullDayWageArr = mapDayWithWageArr.filter(fulltimeWage);
+console.log("Daily Wage  filter when worked full time:\n" + fullDayWageArr)
+
+console.log("First Full Time Wage day:\n" + mapDayWithWageArr[0]);
+
+console.log("Check all Element have Full time wage:\n"
+            + fullDayWageArr.every(fulltimeWage));
+
+console.log("Check if any Part Time Wage:\n" + mapDayWithWageArr.some(isAnyPartTimeWage));
+
+console.log("Number of days Employee worked: " + employeeDailyWagesArr.reduce(totalDaysWorked, 0));
