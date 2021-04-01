@@ -39,7 +39,7 @@ function fulltimeWage(dailyWage) {
     return dailyWage.includes("160");
 }
 
-function isAnyPartTimeWage(dailyWage) {
+function partTimeWage(dailyWage) {
     return dailyWage.includes("80");
 }
 
@@ -52,13 +52,17 @@ let totalEmpWage = 0;
 let totalempHr = 0;
 let totalWorkingDays = 0;
 let employeeDailyWagesArr = new Array();
+let employeeDailyWageMap = new Map();
+let employeeDailyHrsMap = new Map();
 
 while (totalempHr < MAX_WORKING_HOUR && totalWorkingDays < MAX_WORKING_DAYS) {
+    totalWorkingDays++;
     let checkEmp = Math.floor(Math.random() * 10) % 3;
     let empHr = getWorkingHours(checkEmp);
     totalempHr += empHr
-    employeeDailyWagesArr.push(calculateDailyWage(empHr));
-    totalWorkingDays++;
+    employeeDailyWagesArr.push(calculateDailyWage(empHr));    
+    employeeDailyHrsMap.set(totalWorkingDays, empHr);
+    employeeDailyWageMap.set(totalWorkingDays, calculateDailyWage(empHr));
 }
 employeeDailyWagesArr.forEach(sum);
 console.log("Total Employee Hours: " + totalempHr + "\nTotal Working Days: " + totalWorkingDays + "\nMonthly Wage: " + totalEmpWage);
@@ -78,6 +82,10 @@ console.log("First Full Time Wage day:\n" + mapDayWithWageArr[0]);
 console.log("Check all Element have Full time wage:\n"
             + fullDayWageArr.every(fulltimeWage));
 
-console.log("Check if any Part Time Wage:\n" + mapDayWithWageArr.some(isAnyPartTimeWage));
+console.log("Check if any Part Time Wage:\n" + mapDayWithWageArr.some(partTimeWage));
 
 console.log("Number of days Employee worked: " + employeeDailyWagesArr.reduce(totalDaysWorked, 0));
+
+console.log(employeeDailyWageMap);
+console.log("Employee Wage Map Total Wage: " + Array.from(employeeDailyWageMap.values()).reduce(totalWages,0));
+console.log("Employee Wage Map Total Hours: " + Array.from(employeeDailyHrsMap.values()).reduce(totalWages,0));
